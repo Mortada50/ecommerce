@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/Mortada50/ecommerce/issues"
   },
-  "homepage": "https://github.com/Mortada50/ecommerce#readme"
+  "homepage": "https://github.com/Mortada50/ecommerce#readme",
+  "dependencies": {
+    "cloudinary": "^2.8.0"
+  }
 }
