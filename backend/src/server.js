@@ -9,7 +9,7 @@ import { functions, inngest } from "./config/inngest.js";
 const app = express();
 
 const __dirname = path.resolve();
-
+app.use(express.json());
 app.use(clerkMiddleware()); // adds auth object under the req => req.auth
 
 
