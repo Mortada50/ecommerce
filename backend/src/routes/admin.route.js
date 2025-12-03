@@ -23,7 +23,7 @@ router.put("/product/:id", upload.array("images", 3), updateProduct)
 router.get("/order", getAllOrders)
 router.patch("/order/:orderId/status", updateOrderStatus)
 
-router.get("/custormers", getAllCustomers)
+router.get("/customers", getAllCustomers)
 router.get("/stats", getDashboardStats)
 
 // PUT: Used for full resource replacement, updating the entire resource
