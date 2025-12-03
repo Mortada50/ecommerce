@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   addAddress,
-  addRoWishlist,
+  addToWishlist,
   deleteAddress,
   getAddresses,
   getWishlist,
@@ -21,8 +21,8 @@ router.put("/addresses/:addressId", updateAddress);
 router.delete("/addresses/:addressId", deleteAddress);
 
 // wishlist routes
-router.post("/wishlish", addRoWishlist);
-router.delete("/wishlish/:productId", removeFromWishlist);
-router.get("/wishlish", getWishlist);
+router.post("/wishlist", addToWishlist);
+router.delete("/wishlist/:productId", removeFromWishlist);
+router.get("/wishlist", getWishlist);
 
 export default router;
