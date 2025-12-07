@@ -15,7 +15,7 @@ export async function getCart(req, res){
             });
         }
 
-        res.status(200).josn({ cart })
+        res.status(200).json({ cart })
 
     } catch (error) {
         console.log("Error in getCart controller: ", error);
@@ -40,6 +40,7 @@ export async function addToCart(req, res) {
     let cart = await Cart.findOne({clerkId: req.user.clerkId});
 
     if(!cart){
+        const user = req.user
         cart = await Cart.create({
             user: user._id,
             clerkId: user.clerkId,
@@ -48,7 +49,9 @@ export async function addToCart(req, res) {
     }
 
     // check if item already in the cart
-    const existingItem = cart.items.find((item) => item.product.toString());
+    const existingItem = cart.items.find(
+      (item) => item.product.toString() === productId
+    );
     if(existingItem){
         // increment quantity by 1
         const newQuantity = existingItem.quantity + 1;
