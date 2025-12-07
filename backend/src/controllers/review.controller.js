@@ -50,7 +50,7 @@ export async function createReview(req, res){
         const updatedProduct = await Product.findByIdAndUpdate(
             productId,
             {
-                averageRating: totalRating + reviews.length,
+                averageRating: totalRating / reviews.length,
                 totalReviews: reviews.length,
             },
             { new: true, runValidators: true}
