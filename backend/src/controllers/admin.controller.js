@@ -1,6 +1,6 @@
 import cloudinary from "../config/cloudinary.js";
-import { Product } from "../models/product.model.js";
 import { Oreder } from "../models/order.model.js";
+import { Product } from "../models/product.model.js";
 import { User } from "../models/user.model.js";
 export async function createProduct(req, res) {
   try {
@@ -106,7 +106,7 @@ export async function getAllOrders(_, res) {
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.log("Error fetching orders: ", error);
+    console.log("Error fetching orders: ", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -155,9 +155,9 @@ export async function getAllCustomers(_, res) {
 
 export async function getDashboardStats(_, res) {
   try {
-    const totalOrders = await Order.countDocuments();
+    const totalOrders = await Oreder.countDocuments();
 
-    const revenueResult = await Order.aggregate([
+    const revenueResult = await Oreder.aggregate([
       {
         $group: {
           _id: null,
