@@ -20,7 +20,7 @@ router.post("/product", upload.array("images", 3), createProduct);
 router.get("/product", getAllProducts)
 router.put("/product/:id", upload.array("images", 3), updateProduct)
 
-router.get("/order", getAllOrders)
+router.get("/orders", getAllOrders)
 router.patch("/order/:orderId/status", updateOrderStatus)
 
 router.get("/customers", getAllCustomers)
