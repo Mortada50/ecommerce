@@ -16,12 +16,12 @@ const DashboardPage = () => {
 
   // it would be better to send the last 5 items from the api, instead of slicing it here
   // but we're just keeping it simple here...
-  const recentOrders = ordersData?.orders.slice(0, 5) || [];
+  const recentOrders = ordersData?.orders?.slice(0, 5) || [];
 
   const statsCards = [
     {
       name: "Total Revenue",
-      value: statsLoading ? "..." : `$${statsData.totalRevenue.toFixed(2) || 0}`,
+      value: statsLoading ? "..." : `$${(statsData?.totalRevenue ?? 0).toFixed(2)}`,
       icon: <DollarSignIcon className='size-8' />,
     },
     {
