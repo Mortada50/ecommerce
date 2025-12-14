@@ -109,7 +109,7 @@ export async function deleteProduct(req, res){
       const deletePromises = product.images.map((imageUrl) => {
         // Extract public_id from URL (assumes format: .../products/publicId.ext)
         const publicId = "products/" + imageUrl.split("/products/")[1]?.split(".")[0];
-        if(publicId) return cloudinary.uploader.destroy(pyblicId);
+        if(publicId) return cloudinary.uploader.destroy(publicId);
       });
       await Promise.all(deletePromises.filter(Boolean));
     }
