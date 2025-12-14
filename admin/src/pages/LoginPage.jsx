@@ -1,15 +1,12 @@
-import { SignIn } from '@clerk/clerk-react'
-import React from 'react'
+import { SignIn } from "@clerk/clerk-react";
+import React from "react";
 
 const LoginPage = () => {
   return (
-    <div>
-      Login Page.
-      <div>
-        <SignIn />
-      </div>
+    <div className="h-screen flex justify-center items-center">
+      <SignIn />
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
