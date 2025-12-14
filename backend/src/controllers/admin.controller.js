@@ -63,7 +63,7 @@ export async function updateProduct(req, res) {
     const { id } = req.params;
     const { name, description, price, stock, category } = req.body;
 
-    const product = await Product.findById({ id });
+    const product = await Product.findById(id);
 
     if (!product) return res.status(404).json({ message: "Product not found" });
 
@@ -94,6 +94,33 @@ export async function updateProduct(req, res) {
   } catch (error) {
     console.log("Error updating products: ", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function deleteProduct(req, res){
+  try {
+    const {id} = req.params;
+
+    const product = await Product.findById(id);
+    if(!product) return res.status(404).json({message: "Product not found"});
+
+    // Delete images from Cloudinary
+    if(product.images && product.images.length > 0){
+      const deletePromises = product.images.map((imageUrl) => {
+        // Extract public_id from URL (assumes format: .../products/publicId.ext)
+        const publicId = "products/" + imageUrl.split("/products/")[1]?.split(".")[0];
+        if(publicId) return cloudinary.uploader.destroy(pyblicId);
+      });
+      await Promise.all(deletePromises.filter(Boolean));
+    }
+
+    await Product.findByIdAndDelete(id);
+    res.status(200).json({message: "Product deleted successfully"})
+    
+    
+  } catch (error) {
+    console.log("Error deleting: ", error);
+    res.status(500).json({ message: "Failed to delete product" });
   }
 }
 
