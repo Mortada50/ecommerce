@@ -1,6 +1,12 @@
-import React from 'react'
-import { useState } from 'react';
-import { PlusIcon, PencilIcon, Trash2Icon, XIcon, ImageIcon } from "lucide-react";
+import React from "react";
+import { useState } from "react";
+import {
+  PlusIcon,
+  PencilIcon,
+  Trash2Icon,
+  XIcon,
+  ImageIcon,
+} from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { productApi } from "../lib/api";
 import { getStockStatusBadge } from "../lib/utils";
@@ -53,6 +59,10 @@ function ProductsPage() {
     // rest the state
     setShowModal(false);
     setEditingProduct(null);
+    // Revoke object URLs to prevent memory leak
+    imagePreviews.forEach((url) => {
+      if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+    });
     setFormData({
       name: "",
       category: "",
@@ -62,7 +72,7 @@ function ProductsPage() {
     });
     setImagePreviews([]);
     setImages([]);
-  }
+  };
 
   const handleEdit = (product) => {
     setEditingProduct(product);
@@ -75,28 +85,36 @@ function ProductsPage() {
     });
     setImagePreviews(product.images);
     setShowModal(true);
-  }
+  };
 
- const handleDelete = (product) => {
-   setDeletingId(product._id);
-   deleteProductMutation.mutate({id: product._id}, {
-     onSettled: () => setDeletingId(null),
-   });
- };
+  const handleDelete = (product) => {
+    setDeletingId(product._id);
+    deleteProductMutation.mutate(
+      { id: product._id },
+      {
+        onSettled: () => setDeletingId(null),
+      }
+    );
+  };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    if(files.length > 3) return alert("Maximum 3 images allowed");
+    if (files.length > 3) return alert("Maximum 3 images allowed");
+
+    // Revoke previous object URLs to prevent memory leak
+    imagePreviews.forEach((url) => {
+      if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+    });
 
     setImages(files);
     setImagePreviews(files.map((file) => URL.createObjectURL(file)));
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // for new products, require images
-    if(!editingProduct && imagePreviews.length === 0){
+    if (!editingProduct && imagePreviews.length === 0) {
       return alert("Please upload at least one image");
     }
 
@@ -108,15 +126,18 @@ function ProductsPage() {
     formDataToSend.append("category", formData.category);
 
     // only append new images if they were selected
-    if(images.length > 0) images.forEach(image => formDataToSend.append("images", image));
+    if (images.length > 0)
+      images.forEach((image) => formDataToSend.append("images", image));
 
-    if(editingProduct){
-      updateProductMutation.mutate({id: editingProduct._id, formData: formDataToSend});
-    }else{
+    if (editingProduct) {
+      updateProductMutation.mutate({
+        id: editingProduct._id,
+        formData: formDataToSend,
+      });
+    } else {
       createProductMutation.mutate(formDataToSend);
     }
-
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -191,7 +212,7 @@ function ProductsPage() {
                       className="btn btn-square btn-ghost text-error"
                       onClick={() => handleDelete(product)}>
                       {deletingId === product._id &&
-                       deleteProductMutation.isPending ? (
+                      deleteProductMutation.isPending ? (
                         <span className="loading loading-spinner" />
                       ) : (
                         <Trash2Icon className="size-5" />
@@ -373,16 +394,16 @@ function ProductsPage() {
                 disabled={
                   createProductMutation.isPending ||
                   updateProductMutation.isPending
-                }
-                >
-                  {createProductMutation.isPending || updateProductMutation.isPending ? (
-                    <span className='loading loading-spinner' />
-                  ) : editingProduct ? (
-                    "Update Product"
-                  ) : (
-                    "Add Product"
-                  )}
-                </button>
+                }>
+                {createProductMutation.isPending ||
+                updateProductMutation.isPending ? (
+                  <span className="loading loading-spinner" />
+                ) : editingProduct ? (
+                  "Update Product"
+                ) : (
+                  "Add Product"
+                )}
+              </button>
             </div>
           </form>
         </div>
@@ -391,4 +412,4 @@ function ProductsPage() {
   );
 }
 
-export default ProductsPage
+export default ProductsPage;
