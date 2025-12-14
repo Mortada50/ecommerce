@@ -32,6 +32,7 @@ function ProductsPage() {
     select: (res) => res.products,
   });
 
+  // creating, update, deleting
   const createProductMutation = useMutation({
     mutationFn: productApi.create,
     onSuccess: () => {
