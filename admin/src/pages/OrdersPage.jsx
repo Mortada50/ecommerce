@@ -8,7 +8,7 @@ function OrdersPage() {
   const queryClient = useQueryClient();
 
   const { data: ordersData, isLoading } = useQuery({
-    querykey: ["orders"],
+    queryKey: ["orders"],
     queryFn: orderApi.getAll,
   });
 
@@ -16,8 +16,10 @@ function OrdersPage() {
     mutationFn: orderApi.updateStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
-      queryClient.invalidateQueries({ querykey: ["dashboardStats"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboardStats"] });
     },
+
+    
   });
 
   const handleStatusChange = (orderId, newStatus) => {
