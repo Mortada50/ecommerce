@@ -1,10 +1,12 @@
 
 import SafeScreen from '@/components/SafeScreen'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 
 function AddressesScreen() {
   return (
-    <SafeScreen>OrdersScreen</SafeScreen>
+    <SafeScreen>
+      <Text>AddressesScreen</Text>
+    </SafeScreen>
   )
 }
 
