@@ -12,7 +12,7 @@ export async function createOrder(req, res) {
     }
 
     //  validate products and stock
-    // todo: check later in the video if this is actully working
+  
     for (const item of orderItems) {
       const product = await Product.findById(item.product._id);
       if (!product) {
