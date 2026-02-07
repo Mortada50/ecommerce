@@ -1,10 +1,12 @@
 import { View, Text, FlatList, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Product } from '@/types'
 import useWishlist from '@/hooks/useWishlist';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import useCart from '@/hooks/useCart';
+
+
 
 interface ProductsGridProps {
   isLoading: boolean;
@@ -15,20 +17,31 @@ interface ProductsGridProps {
 const ProductsGrid = ({products, isLoading, isError}:ProductsGridProps) => {
   const {isInWishlist, toggleWishlist, isAddingToWishlist, isRemovingFromWishlist} = useWishlist();
 
+  const [proId, setProId] = useState("")
+  const [wishListproId, setWishListproId] = useState("")
+
   const {isAddingToCart, addToCart} = useCart()
   const handleAddToCart = (productId: string, productName: string) => {
+    setProId(productId);
     addToCart(
       {productId, quantity: 1},
       {
         onSuccess: () => {
           Alert.alert("Success", `${productName} added to cart!`)
+          setProId("")
+
         },
         onError: (error: any) => {
           Alert.alert("Error", error?.response?.data?.error || "Failed to add to cart")
+          setProId("")
         },
       }
     )
   };
+  const handleToggleWishlist = (productId: string) => {
+      setWishListproId(productId);
+      toggleWishlist(productId)
+  }
   const renderProduct = ({item:product}: {item: Product}) => (
     <TouchableOpacity
       className='bg-surface rounded-3xl overflow-hidden mb-3'
@@ -45,10 +58,10 @@ const ProductsGrid = ({products, isLoading, isError}:ProductsGridProps) => {
         <TouchableOpacity
           className='absolute top-3 right-3 bg-black/30 backdrop-blur-xl p-2 rounded-full'
           activeOpacity={0.7}
-          onPress={() => toggleWishlist(product._id)}
+          onPress={() => handleToggleWishlist(product._id)}
           disabled={isAddingToWishlist || isRemovingFromWishlist}
         >
-          {isAddingToWishlist || isRemovingFromWishlist ? (
+          {(isAddingToWishlist || isRemovingFromWishlist) && wishListproId === product._id ? (
             <ActivityIndicator size="small" color="#FFFFFF" />
           ) : (
             <Ionicons 
@@ -78,10 +91,10 @@ const ProductsGrid = ({products, isLoading, isError}:ProductsGridProps) => {
           <TouchableOpacity
             className='bg-primary rounded-full w-8 h-8 items-center justify-center'
             activeOpacity={0.7}
-            onPress={() => handleAddToCart(product._id, product.name)}
+            onPress={() => {  handleAddToCart(product._id, product.name)}}
             disabled={isAddingToCart}
           >
-            {isAddingToCart ? (
+            {isAddingToCart && proId === product._id ? (
               <ActivityIndicator size="small" color="#121212" />
             ) : (
               <Ionicons name='add' size={18} color="#121212" />

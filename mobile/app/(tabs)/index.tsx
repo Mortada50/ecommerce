@@ -4,10 +4,8 @@ import SafeScreen from '@/components/SafeScreen'
 import { Ionicons } from '@expo/vector-icons'
 import ProductsGrid from '@/components/ProductsGrid';
 import useProducts from '@/hooks/useProducts';
-import { Button } from '@react-navigation/elements';
-import * as Sentry from '@sentry/react-native';
 
-// todo: in the payment section use sentry logs to track payment errors - workflow
+
 
 const CATEGORIES = [
   {name: "All", icon: "grid-outline" as const},
@@ -31,12 +29,12 @@ const ShopScreen = () => {
 
       // filtering by category
       if(selectedCategory !== "All"){
-        filtered = filtered.filter(product => product.category === selectedCategory)
+        filtered = filtered.filter((product: any) => product.category === selectedCategory)
       }
   
       // filtering by search query
       if(searchQuery.trim()){
-        filtered = filtered.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        filtered = filtered.filter((product: any) => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
       }
   
     
