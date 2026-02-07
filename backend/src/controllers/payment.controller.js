@@ -119,9 +119,10 @@ export async function handlewebhook(req, res) {
         const paymentIntent = event.data.object;
 
         console.log("Payment succeeeded", paymentIntent.id);
+        
 
         try {
-            const { userId, clerkId, orderItems, shippingAddress, totalPrice } = paymentIntent.metadata
+            const { userId, clerkId, orderItems, shippingAddress, totalPrice } = paymentIntent.metadata;
 
             // Check if order already exists (prevent duplicates)
             const existingOrder = await Oreder.findOne({"paymentResult.id": paymentIntent.id});
@@ -131,17 +132,17 @@ export async function handlewebhook(req, res) {
             }
 
             //create order
-            const order = await Order.create({
-                user: userId,
-                clerkId,
-                orderItems: JSON.parse(orderItems),
-                shippingAddress: JSON.parse(shippingAddress),
-                paymentResult: {
-                    id: paymentIntent.id,
-                    status: "succeeded",
-                },
-                totalPrice: parseFloat(totalPrice)
-            }) 
+            const order = await Oreder.create({
+              user: userId,
+              clerkId,
+              orderItems: JSON.parse(orderItems),
+              shippingAddress: JSON.parse(shippingAddress),
+              paymentResult: {
+                id: paymentIntent.id,
+                status: "succeeded",
+              },
+              totalPrice: parseFloat(totalPrice),
+            }); 
 
             // update product stock
             const items = JSON.parse(orderItems);
