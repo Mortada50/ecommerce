@@ -31,13 +31,25 @@ export async function createReview(req, res){
             return res.status(400).json({message: "Product not found in this order"})
         }
 
+        let review;
         // check if review already exists
         const existingReview = await Review.findOne({productId, userId: user._id});
         if(existingReview){
-            return res.status(400).json({message: "You have already reviewed this product"});
+            // update existing review
+            existingReview.rating = rating;
+            existingReview.orderId = orderId;
+            review = await existingReview.save();
+        }else{
+            // create new review
+            review = await Review.create({
+                productId,
+                userId: user._id,
+                orderId,
+                rating,
+            });
         }
 
-        const review = await Review.create({
+        review = await Review.create({
             productId,
             userId: user._id,
             orderId,

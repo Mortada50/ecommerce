@@ -31,12 +31,12 @@ const ShopScreen = () => {
 
       // filtering by category
       if(selectedCategory !== "All"){
-        filtered = filtered.filter(product => product.category === selectedCategory)
+        filtered = filtered.filter((product: any) => product.category === selectedCategory)
       }
   
       // filtering by search query
       if(searchQuery.trim()){
-        filtered = filtered.filter(product => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
+        filtered = filtered.filter((product: any) => product.name.toLowerCase().includes(searchQuery.toLowerCase()))
       }
   
     
