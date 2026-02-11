@@ -9,7 +9,7 @@ import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } fr
 
 
 function WishlistScreen() {
-  const { wishlist, isLoading, isError, removeFromWishlist, isRemoveingFromWishlist } = useWishlist();
+  const { wishlist, isLoading, isError, removeFromWishlist, isRemovingFromWishlist } = useWishlist();
   
   const { addToCart, isAddingToCart } = useCart();
 
@@ -108,7 +108,7 @@ function WishlistScreen() {
                      className='self-start bg-red-500/20 p-2 rounded-full'
                      activeOpacity={0.7}
                      onPress={() => handleRemoveFromWishlist(item._id, item.name)}
-                     disabled={isRemoveingFromWishlist}
+                     disabled={isRemovingFromWishlist}
                     >
                       <Ionicons name='trash-outline' size={20} color="#EF4444" />
                     </TouchableOpacity>

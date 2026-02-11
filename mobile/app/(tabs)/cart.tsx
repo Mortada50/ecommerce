@@ -1,5 +1,5 @@
 import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import React, { Component, useState } from 'react'
+import React, {  useState } from 'react'
 import SafeScreen from '@/components/SafeScreen'
 import useCart from '@/hooks/useCart'
 import { useApi } from '@/lib/api'
@@ -16,13 +16,10 @@ const CartScreen = () => {
   
   const api = useApi();
   const {
-    addToCart,
-    isAddingToCart,
     cart,
     cartItemCount,
     cartTotal, 
     clearCart,
-    isClearing, 
     isError,
     isLoading, 
     isRemoving,
