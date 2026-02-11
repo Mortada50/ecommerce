@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import {  ActivityIndicator, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { Redirect, Tabs } from 'expo-router'
 import {Ionicons} from "@expo/vector-icons"
@@ -9,8 +9,14 @@ import {BlurView} from "expo-blur"
 const TabsLayout = () => {
     const {isSignedIn, isLoaded} = useAuth();
     const insets = useSafeAreaInsets()
-    if(!isLoaded) return null; // for a better ux
-    if(!isSignedIn) return <Redirect href={"/(auth)"} />
+    if(!isLoaded){
+       return (
+           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+             <ActivityIndicator />
+           </View>
+         ); 
+    } 
+    if(!isSignedIn) return <Redirect href="/(auth)" />
 
   return (
     <Tabs
@@ -41,7 +47,7 @@ const TabsLayout = () => {
         ),
         tabBarLabelStyle: {
             fontSize: 12,
-            fontWeight: 600,
+            fontWeight: "600",
         },
         
      }}
