@@ -5,6 +5,7 @@ import useCart from '@/hooks/useCart'
 import { useApi } from '@/lib/api'
 import { useAddresses } from '@/hooks/useAddresses'
 import { useStripe } from "@stripe/stripe-react-native";
+
 import { Address } from '@/types'
 import { Ionicons } from '@expo/vector-icons'
 import { Image } from 'expo-image'
